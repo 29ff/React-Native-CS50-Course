@@ -1,0 +1,3 @@
+rootProject.name = 'cs50course'
+
+include ':app'
