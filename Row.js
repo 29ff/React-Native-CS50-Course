@@ -10,7 +10,8 @@ const Row = props => (
 
 const styles = StyleSheet.create({
   contact: {
-    marginBottom: 10
+    marginBottom: 10,
+    marginLeft: 20
   }
 })
 
