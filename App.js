@@ -8,6 +8,7 @@
 
 import React, {Component} from 'react';
 import { Button, ScrollView, StyleSheet, View, FlatList } from 'react-native';
+import ContactList from './ContactList'
 
 import Row from './Row'
 import contacts, { compareNames } from './contacts';
@@ -30,18 +31,21 @@ export default class App extends Component {
     }))
   }
 
+  renderSectionHeader = obj => <Text>{obj.section.title}</Text>
+
    _keyExtractor = (_, index) => index.toString();
 
   renderItem = ({ item }) => (<Row {...item} />)
 
   render() {
+    const { contacts } = this.state
     return (
       <View style={styles.app}>
         <Button title="Toggle Contacts" onPress={this.toggleContacts} />
         <Button title="Sort Contacts" onPress={this.sortContacts} />
         {this.state.showContacts && (
-          <FlatList
-            data={this.state.contacts}
+          <ContactList
+            contacts={contacts}
             renderItem={this.renderItem}
             keyExtractor={this._keyExtractor}
           />
