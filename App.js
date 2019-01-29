@@ -8,14 +8,15 @@
 
 import React, {Component} from 'react';
 import { Button, ScrollView, StyleSheet, View, FlatList } from 'react-native';
-import ContactList from './ContactList'
 
-import Row from './Row'
+import AddContactForm from './AddContactForm'
+import ContactList from './ContactList'
 import contacts, { compareNames } from './contacts';
 
 export default class App extends Component {
   state = {
     showContacts: false,
+    showForm: false,
     contacts: contacts
   }
 
@@ -25,28 +26,33 @@ export default class App extends Component {
     }))
   }
 
-  sortContacts = () => {
+  toggleForm = () => {
     this.setState(prevState => ({
-      contacts: [...prevState.contacts].sort(compareNames)
+      showForm: !prevState.showForm
     }))
   }
 
-  renderSectionHeader = obj => <Text>{obj.section.title}</Text>
+  addContact = contact => {
+    this.setState(prevState => ({
+      showForm: false,
+      contacts: [ ...prevState.contacts, contact ]
+    }))
+  }
 
    _keyExtractor = (_, index) => index.toString();
 
-  renderItem = ({ item }) => (<Row {...item} />)
 
   render() {
-    const { contacts } = this.state
+    const { contacts, showForm, showContacts } = this.state
+
+    if (showForm) return <AddContactForm addContact={this.addContact} />
     return (
       <View style={styles.app}>
         <Button title="Toggle Contacts" onPress={this.toggleContacts} />
-        <Button title="Sort Contacts" onPress={this.sortContacts} />
-        {this.state.showContacts && (
+        <Button title="Add Contacts" onPress={this.toggleForm} />
+        {showContacts && (
           <ContactList
             contacts={contacts}
-            renderItem={this.renderItem}
             keyExtractor={this._keyExtractor}
           />
         )}
